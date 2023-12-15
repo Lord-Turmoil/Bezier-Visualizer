@@ -213,8 +213,8 @@ void DrawHelp()
     int lineHeight = 30;
     outtextxy(10, y, L"鼠标左键新建控制点");
     outtextxy(10, y += lineHeight, L"鼠标左键按下拖动控制点");
-    outtextxy(10, y += lineHeight, L"鼠标右键清空控制点");
-    outtextxy(10, y += lineHeight, L"按 Shift 吸附节点");
+    outtextxy(10, y += lineHeight, L"鼠标右键清空屏幕");
+    outtextxy(10, y += lineHeight, L"按 Shift 开启吸附");
     outtextxy(10, y += lineHeight, L"按 ESC 退出");
 }
 
