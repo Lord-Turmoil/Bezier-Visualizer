@@ -48,16 +48,19 @@ void DrawBezierCurve(const std::vector<Point>& points, double step)
     }
 }
 
+
 void DrawCoordinates(const std::vector<Point>& points)
 {
     static wchar_t buffer[64];
     settextstyle(18, 0, L"Consolas");
+    settextcolor(BLACK);
     for (auto& point : points)
     {
         swprintf_s(buffer, L"(%.2f, %.2f)", point.x, point.y);
         outtextxy(static_cast<int>(point.x + 0.5), static_cast<int>(point.y + 0.5), buffer);
     }
 }
+
 
 void DrawBezierControlLines(const std::vector<std::vector<Point>>& lines)
 {
@@ -101,6 +104,7 @@ void DrawControls(double step, Point* draggingPoint)
                   SLIDE_X + static_cast<int>(SLIDE_WIDTH * step) + 10, SLIDE_Y + SLIDE_HEIGHT + 10);
 
     settextstyle(24, 0, L"Consolas");
+    settextcolor(BLACK);
     swprintf_s(buffer, L"t = %.2f", step);
     outtextxy(SLIDE_X + SLIDE_WIDTH + 20, SLIDE_Y - 8, buffer);
 
@@ -125,4 +129,12 @@ void DrawHelp()
     outtextxy(10, y += lineHeight, L"按 Shift 开启吸附");
     outtextxy(10, y += lineHeight, L"按 C 切换坐标显示");
     outtextxy(10, y += lineHeight, L"按 ESC 退出");
+}
+
+
+void DrawCopyright()
+{
+    settextstyle(18, 0, L"Consolas");
+    settextcolor(0x5F5F5F);
+    outtextxy(WIDTH - 280, 10, L"Copyright (C) Tony's Studio 2023");
 }

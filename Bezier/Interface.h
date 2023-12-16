@@ -35,4 +35,7 @@ void DrawControls(double step, Point* draggingPoint);
 void DrawHelp();
 
 
+/// \brief Draw copyright.
+void DrawCopyright();
+
 #endif

@@ -81,6 +81,7 @@ int APIENTRY WinMain(
 
         DrawControls(step, draggingPoint);
         DrawHelp();
+        DrawCopyright();
 
         FlushBatchDraw();
         Sleep(18);
