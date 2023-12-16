@@ -19,6 +19,10 @@ const int SLIDE_HEIGHT = 10;
 /// \param step Range in [0, 1], 0 means nothing, 1 means complete.
 void DrawBezierCurve(const std::vector<Point>& points, double step);
 
+/// \brief Draw coordinates for points.
+/// \param points Bezier curve control points.
+void DrawCoordinates(const std::vector<Point>& points);
+
 /// \brief Draw Bezier control lines.
 /// \param lines Bezier control lines.
 void DrawBezierControlLines(const std::vector<std::vector<Point>>& lines);

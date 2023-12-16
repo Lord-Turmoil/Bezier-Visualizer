@@ -48,6 +48,16 @@ void DrawBezierCurve(const std::vector<Point>& points, double step)
     }
 }
 
+void DrawCoordinates(const std::vector<Point>& points)
+{
+    static wchar_t buffer[64];
+    settextstyle(18, 0, L"Consolas");
+    for (auto& point : points)
+    {
+        swprintf_s(buffer, L"(%.2f, %.2f)", point.x, point.y);
+        outtextxy(static_cast<int>(point.x + 0.5), static_cast<int>(point.y + 0.5), buffer);
+    }
+}
 
 void DrawBezierControlLines(const std::vector<std::vector<Point>>& lines)
 {
@@ -97,7 +107,7 @@ void DrawControls(double step, Point* draggingPoint)
     if (draggingPoint)
     {
         setlinecolor(0x2257FF);
-        circle((int)(draggingPoint->x + 0.5), (int)(draggingPoint->y + 0.5), 10);
+        circle(static_cast<int>(draggingPoint->x + 0.5), static_cast<int>(draggingPoint->y + 0.5), 10);
     }
 }
 
@@ -113,5 +123,6 @@ void DrawHelp()
     outtextxy(10, y += lineHeight, L"鼠标左键按下拖动控制点");
     outtextxy(10, y += lineHeight, L"鼠标右键清空屏幕");
     outtextxy(10, y += lineHeight, L"按 Shift 开启吸附");
+    outtextxy(10, y += lineHeight, L"按 C 切换坐标显示");
     outtextxy(10, y += lineHeight, L"按 ESC 退出");
 }

@@ -15,6 +15,7 @@ static std::vector<std::vector<Point>> controlLines;
 static Point* draggingPoint;
 static bool isSliding;
 static double step = 1.0;
+static bool showCoordinate = false;
 
 /// \brief Process user input.
 void ProcessInput();
@@ -73,6 +74,10 @@ int APIENTRY WinMain(
         cleardevice();
         DrawBezierCurve(controlPoints, step);
         DrawBezierControlLines(controlLines);
+        if (showCoordinate)
+        {
+            DrawCoordinates(controlPoints);
+        }
 
         DrawControls(step, draggingPoint);
         DrawHelp();
@@ -90,9 +95,19 @@ void ProcessInput()
     ExMessage msg;
     while (peekmessage(&msg, EX_MOUSE | EX_KEY))
     {
-        if (msg.message == WM_KEYDOWN && msg.vkcode == VK_ESCAPE)
+        if (msg.message == WM_KEYDOWN)
         {
-            isRunning = false;
+            switch (msg.vkcode)
+            {
+            case VK_ESCAPE:
+                isRunning = false;
+                break;
+            case 'C':
+                showCoordinate = !showCoordinate;
+                break;
+            default:
+                break;
+            }
         }
         else if (msg.message == WM_LBUTTONDOWN)
         {
