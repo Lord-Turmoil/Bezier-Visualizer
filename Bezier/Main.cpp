@@ -5,15 +5,9 @@
 
 #include "Bezier.h"
 #include "Defines.h"
+#include "Interface.h"
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
 const double STICK_DISTANCE = 30.0;
-
-static const int SLIDE_X = 30;
-static const int SLIDE_Y = HEIGHT - 40;
-static const int SLIDE_WIDTH = WIDTH - 180;
-static const int SLIDE_HEIGHT = 10;
 
 static bool isRunning;
 static std::vector<Point> controlPoints;
@@ -27,12 +21,6 @@ void ProcessInput();
 
 /// \brief Process slide.
 bool ProcessSlide(int x, int y);
-
-/// \brief Draw slide control.
-void DrawControls();
-
-/// \brief Draw help text.
-void DrawHelp();
 
 /// \brief Find a control point to be selected, and set it as
 /// draggingPoint. If not found, draggingPoint will be nullptr.
@@ -86,7 +74,7 @@ int APIENTRY WinMain(
         DrawBezierCurve(controlPoints, step);
         DrawBezierControlLines(controlLines);
 
-        DrawControls();
+        DrawControls(step, draggingPoint);
         DrawHelp();
 
         FlushBatchDraw();
@@ -180,42 +168,6 @@ bool ProcessSlide(int x, int y)
     }
 
     return isSliding;
-}
-
-
-void DrawControls()
-{
-    static wchar_t buffer[64];
-
-    setfillcolor(0xBDBDBD);
-    solidrectangle(SLIDE_X, SLIDE_Y, SLIDE_X + SLIDE_WIDTH, SLIDE_Y + SLIDE_HEIGHT);
-
-    setfillcolor(0x0098FF);
-    solidrectangle(SLIDE_X, SLIDE_Y, SLIDE_X + static_cast<int>(SLIDE_WIDTH * step), SLIDE_Y + SLIDE_HEIGHT);
-
-    setlinestyle(PS_SOLID, 2);
-    setlinecolor(0x9E9E9E);
-    setfillcolor(0xE0E0E0);
-    fillrectangle(SLIDE_X + static_cast<int>(SLIDE_WIDTH * step) - 10, SLIDE_Y - 10, SLIDE_X + static_cast<int>(SLIDE_WIDTH * step) + 10, SLIDE_Y + SLIDE_HEIGHT + 10);
-
-    settextstyle(24, 0, L"Consolas");
-    swprintf_s(buffer, L"t = %.2f", step);
-    outtextxy(SLIDE_X + SLIDE_WIDTH + 20, SLIDE_Y - 8, buffer);
-}
-
-
-void DrawHelp()
-{
-    settextstyle(24, 0, L"Microsoft YaHei UI");
-    settextcolor(BLACK);
-
-    int y = 10;
-    int lineHeight = 30;
-    outtextxy(10, y, L"鼠标左键新建控制点");
-    outtextxy(10, y += lineHeight, L"鼠标左键按下拖动控制点");
-    outtextxy(10, y += lineHeight, L"鼠标右键清空屏幕");
-    outtextxy(10, y += lineHeight, L"按 Shift 开启吸附");
-    outtextxy(10, y += lineHeight, L"按 ESC 退出");
 }
 
 

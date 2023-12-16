@@ -17,13 +17,5 @@ int Combination(int n, int k);
 /// \param step Range in [0, 1], 0 means nothing, 1 means complete.
 void InitControlLines(std::vector<std::vector<Point>>* lines, const std::vector<Point>* points, double step);
 
-/// \brief Draw a Bezier curve.
-/// \param points Control points of Bezier curve.
-/// \param step Range in [0, 1], 0 means nothing, 1 means complete.
-void DrawBezierCurve(const std::vector<Point>& points, double step);
-
-/// \brief Draw Bezier control lines.
-/// \param lines Bezier control lines.
-void DrawBezierControlLines(const std::vector<std::vector<Point>>& lines);
 
 #endif // _BEZIER_UTILS_H_
