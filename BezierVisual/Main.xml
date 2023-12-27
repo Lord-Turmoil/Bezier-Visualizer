@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<UI>
+    <!-- Main -->
+    <Main name="Main">
+        <Widgets>
+            <!-- Help Text -->
+            <Static name="help" layer="100" pos="10 10">
+                <Drawer>
+                    <Text width="300" height="30" justified="false" font-size="24" font="Segoe UI" color="#000000">Left click to create control point</Text>
+                </Drawer>
+            </Static>
+
+            <Static name="split" layer="100" pos="600 0">
+                <Drawer>
+                    <Rectangle width="4" height="600" focus="2 0" filled="true" fill-color="#000000" border="0"></Rectangle>
+                </Drawer>
+            </Static>
+
+            <!-- Controls -->
+            <!-- Step slider -->
+
+            <Slider name="step-slider" pos="30 560" layer="100" value="1.0">
+                <Block>
+                    <Button name="" float="true" pos="0% 0%">
+                        <Up>
+                            <Rectangle width="20" height="30" focus="11 16" line-color="#9E9E9E" fill-color="#E0E0E0"
+                                       border="2">
+                            </Rectangle>
+                        </Up>
+                        <Trigger>
+                            <Trigger type="rect" width="22" height="32" focus="11 16"></Trigger>
+                        </Trigger>
+                    </Button>
+                </Block>
+                <Bar>
+                    <Rectangle width="450" height="10" fill-color="#BDBDBD"></Rectangle>
+                </Bar>
+                <BarTrigger>
+                    <Trigger type="rect" width="450" height="20" focus="5 5"></Trigger>
+                </BarTrigger>
+            </Slider>
+            <Static name="step-text" pos="450 550" layer="100">
+                <Drawer>
+                    <Text width="150" height="30" font-size="28" font="Segoe UI" color="#000000">t = 1.0</Text>
+                </Drawer>
+            </Static>
+            <!-- Keyboard Actions -->
+            <Detector name="exit">
+                <Trigger type="key" vkey="0x1B"></Trigger>
+            </Detector>
+        </Widgets>
+    </Main>
+</UI>

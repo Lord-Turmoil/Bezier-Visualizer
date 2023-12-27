@@ -103,6 +103,9 @@ public:
 	AbstractInterface* GetSupInterface() { return m_pSupIntf; }
 	AbstractInterface* GetSubInterface() { return m_pSubIntf; }
 
+	// Add events to the interface.
+	virtual void BindEvents() {}
+
 protected:
 	virtual void _TransitIn() {}
 	virtual void _TransitOut() {}

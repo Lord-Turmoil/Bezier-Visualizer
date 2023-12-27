@@ -7,8 +7,22 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bezier", "Bezier\Bezier.vcx
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9013F60-2647-45FC-BCDF-B151298B622C}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dungine", "Dungine\Dungine.vcxproj", "{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3} = {2F274260-AD6C-465A-B1FF-30E5D9A088B3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BezierVisual", "BezierVisual\BezierVisual.vcxproj", "{511EEFCA-3F45-447D-86AB-969100160C7A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64} = {7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}
+		{F1772632-AC53-47E5-B514-39A25A9C9DFF} = {F1772632-AC53-47E5-B514-39A25A9C9DFF}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyXML2", "TinyXML2\TinyXML2.vcxproj", "{2F274260-AD6C-465A-B1FF-30E5D9A088B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +40,30 @@ Global
 		{F1772632-AC53-47E5-B514-39A25A9C9DFF}.Release|x64.Build.0 = Release|x64
 		{F1772632-AC53-47E5-B514-39A25A9C9DFF}.Release|x86.ActiveCfg = Release|Win32
 		{F1772632-AC53-47E5-B514-39A25A9C9DFF}.Release|x86.Build.0 = Release|Win32
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Debug|x64.ActiveCfg = Debug|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Debug|x64.Build.0 = Debug|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Debug|x86.ActiveCfg = Debug|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Debug|x86.Build.0 = Debug|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Release|x64.ActiveCfg = Release|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Release|x64.Build.0 = Release|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Release|x86.ActiveCfg = Release|x64
+		{7E93F4F8-8B86-4CBA-ACA6-F0C146344E64}.Release|x86.Build.0 = Release|x64
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Debug|x64.ActiveCfg = Debug|x64
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Debug|x64.Build.0 = Debug|x64
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Debug|x86.ActiveCfg = Debug|Win32
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Debug|x86.Build.0 = Debug|Win32
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Release|x64.ActiveCfg = Release|x64
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Release|x64.Build.0 = Release|x64
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Release|x86.ActiveCfg = Release|Win32
+		{511EEFCA-3F45-447D-86AB-969100160C7A}.Release|x86.Build.0 = Release|Win32
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Debug|x64.ActiveCfg = Debug|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Debug|x64.Build.0 = Debug|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Debug|x86.ActiveCfg = Debug|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Debug|x86.Build.0 = Debug|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Release|x64.ActiveCfg = Release|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Release|x64.Build.0 = Release|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Release|x86.ActiveCfg = Release|x64
+		{2F274260-AD6C-465A-B1FF-30E5D9A088B3}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

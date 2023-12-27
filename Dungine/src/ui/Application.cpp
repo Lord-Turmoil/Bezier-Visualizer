@@ -483,12 +483,13 @@ bool Application::_Load(const char* filename)
 	XMLElement* node = doc.GetRoot()->FirstChildElement();
 	while (node)
 	{
-		if (!AddInterface(LoadInterface(node)))
+        const auto inter = AddInterface(LoadInterface(node));
+		if (!inter)
 		{
 			LOG_ERROR(FAILED_TO_LOAD_UI_AT, filename);
 			return false;
 		}
-
+		inter->BindEvents();
 		node = node->NextSiblingElement();
 	}
 

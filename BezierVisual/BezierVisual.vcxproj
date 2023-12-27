@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f1772632-ac53-47e5-b514-39a25a9c9dff}</ProjectGuid>
-    <RootNamespace>Bezier</RootNamespace>
+    <ProjectGuid>{511eefca-3f45-447d-86ab-969100160c7a}</ProjectGuid>
+    <RootNamespace>BezierVisual</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,17 +70,27 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Build\lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\lib-int\$(ProjectName)\$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Build\lib\;$(LibraryPath)</LibraryPath>
-    <TargetName>bezier</TargetName>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Build\lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\lib-int\$(ProjectName)\$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Build\lib\;$(LibraryPath)</LibraryPath>
-    <TargetName>bezier_b</TargetName>
+    <OutDir>$(SolutionDir)Publish\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\bin-int\$(ProjectName)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
+    <IncludePath>$(SolutionDir)BezierVisual\inc;$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Publish\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\bin-int\$(ProjectName)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
+    <IncludePath>$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(SolutionDir)Build\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(SolutionDir)Build\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,10 +149,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bezier.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\Bezier.h" />
+    <ClInclude Include="Macros.h" />
+    <ClInclude Include="MainInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Main.xml" />
+    <Xml Include="UIConfig.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

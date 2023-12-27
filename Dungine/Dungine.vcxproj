@@ -47,13 +47,13 @@
     <OutDir>$(SolutionDir)Build\lib\$(Configuration)\</OutDir>
     <TargetName>dungine_b</TargetName>
     <LibraryPath>$(SolutionDir)Build\;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)Build\lib-int\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\lib-int\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Build\lib\$(Configuration)\</OutDir>
     <TargetName>dungine</TargetName>
     <LibraryPath>$(SolutionDir)Build\;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)Build\lib-int\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\lib-int\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

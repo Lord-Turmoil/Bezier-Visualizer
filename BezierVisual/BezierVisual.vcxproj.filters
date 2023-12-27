@@ -15,13 +15,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bezier.cpp">
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\Bezier.h">
+    <ClInclude Include="Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MainInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="UIConfig.xml" />
+    <Xml Include="Main.xml" />
   </ItemGroup>
 </Project>

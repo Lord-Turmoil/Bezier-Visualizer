@@ -1,6 +1,5 @@
-#include <easyx.h>
 #include <vector>
-#include "Bezier.h"
+#include "../inc/Bezier.h"
 
 
 int Combination(int n, int k)

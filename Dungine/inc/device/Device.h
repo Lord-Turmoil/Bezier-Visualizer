@@ -95,6 +95,9 @@ class Device : public Singleton<Device>
 {
 	friend class Singleton<Device>;
 public:
+	Device* SetWidth(int width) { m_width = width; return this; }
+	Device* SetHeight(int height) { m_height = height; return this; }
+
 	int GetWidth() const { return m_width; }
 	int GetHeight() const { return m_height; }
 

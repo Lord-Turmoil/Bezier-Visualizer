@@ -286,11 +286,6 @@ void Device::Create(bool fullscreen)
 		m_width = screenWidth;
 		m_height = screenHeight;
 	}
-	else
-	{
-		m_width = DEVICE_WIDTH;
-		m_height = DEVICE_HEIGHT;
-	}
 
 	HWND hWnd;
 
