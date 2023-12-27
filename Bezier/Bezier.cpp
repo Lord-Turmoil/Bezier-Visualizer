@@ -46,3 +46,50 @@ void InitControlLines(std::vector<std::vector<Point>>* lines, const std::vector<
     lines->emplace_back(next);
     InitControlLines(lines, nullptr, step);
 }
+
+bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1)
+{
+    int n = static_cast<int>(points.size());
+    if (n < 2)
+    {
+        return false;
+    }
+
+    if (n == 2)
+    {
+        if (c0)
+        {
+            *c0 = 0.0;
+        }
+        if (c1)
+        {
+            *c1 = 0.0;
+        }
+        return true;
+    }
+
+    // P[0...n]
+    n--;
+
+
+    if (c0)
+    {
+        double k0 = static_cast<double>(n - 1) / static_cast<double>(n);
+        double t0 = (points[1] - points[0]).Cross(points[2] - points[1]).Mod();
+        double t1 = (points[1] - points[0]).Mod();
+        t1 = t1 * t1 * t1;
+        k0 = k0 * t0 / t1;
+        *c0 = k0;
+    }
+    if (c1)
+    {
+        double k1 = static_cast<double>(n - 1) / static_cast<double>(n);
+        double t0 = (points[n - 1] - points[n - 2]).Cross(points[n] - points[n - 1]).Mod();
+        double t1 = (points[n] - points[n - 1]).Mod();
+        t1 = t1 * t1 * t1;
+        k1 = k1 * t0 / t1;
+        *c1 = k1;
+    }
+
+    return true;
+}

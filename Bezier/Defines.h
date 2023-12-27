@@ -3,6 +3,7 @@
 #ifndef _BEZIER_DEFINES_H_
 #define _BEZIER_DEFINES_H_
 
+#include <cmath>
 
 struct Point
 {
@@ -22,19 +23,33 @@ struct Point
 
     Point operator+(const Point& p) const
     {
-        return Point({ x + p.x, y + p.y });
+        return { x + p.x, y + p.y };
     }
 
+    Point operator-(const Point& p) const
+    {
+        return { x - p.x, y - p.y };
+    }
 
     friend Point operator*(Point lhs, double rhs)
     {
-        return Point({ lhs.x * rhs, lhs.y * rhs });
+        return { lhs.x * rhs, lhs.y * rhs };
     }
 
 
     friend Point operator*(double lhs, Point rhs)
     {
-        return Point({ lhs * rhs.x, lhs * rhs.y });
+        return { lhs * rhs.x, lhs * rhs.y };
+    }
+
+    Point Cross(const Point& p) const
+    {
+        return { x * p.y - y * p.x, y * p.x - x * p.y };
+    }
+
+    double Mod() const
+    {
+        return std::sqrt(x * x + y * y);
     }
 };
 
