@@ -78,7 +78,7 @@ bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1
         double t1 = (points[1] - points[0]).Mod();
         t1 = t1 * t1 * t1;
         k0 = k0 * t0 / t1;
-        *c0 = k0;
+        *c0 = k0 * 100;
     }
     if (c1)
     {
@@ -87,7 +87,7 @@ bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1
         double t1 = (points[n] - points[n - 1]).Mod();
         t1 = t1 * t1 * t1;
         k1 = k1 * t0 / t1;
-        *c1 = k1;
+        *c1 = k1 * 100;
     }
 
     return true;

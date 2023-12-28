@@ -5,6 +5,7 @@ static void DrawCurvePoint(double x, double y);
 static void DrawLine(const Point& from, const Point& to, COLORREF color);
 static void DrawBezierCurve(const std::vector<Point>& points, double step);
 static void DrawCoordinates(const std::vector<Point>& points);
+static void DrawCurvature(const std::vector<Point>& points);
 static void DrawBezierControlLines(const std::vector<std::vector<Point>>& lines);
 
 
@@ -84,11 +85,7 @@ void BezierImpl::Render()
     if (_showCoordinate)
     {
         DrawCoordinates(_controlPoints);
-    }
-
-    if (_showCurvature)
-    {
-        // DrawCurvature(_controlPoints);
+        DrawCurvature(_controlPoints);
     }
 }
 
@@ -191,7 +188,30 @@ static void DrawCoordinates(const std::vector<Point>& points)
     for (auto& point : points)
     {
         swprintf_s(buffer, L"(%.2f, %.2f)", point.x, point.y);
-        outtextxy(static_cast<int>(point.x + 0.5), static_cast<int>(point.y + 0.5), buffer);
+        outtextxy(static_cast<int>(point.x + 1.5), static_cast<int>(point.y + 1.5), buffer);
+    }
+}
+
+
+void DrawCurvature(const std::vector<Point>& points)
+{
+    static wchar_t buffer[64];
+
+    double c0;
+    double c1;
+
+    if (CalculateCurvature(points, &c0, &c1))
+    {
+        settextstyle(18, 0, L"Consolas");
+        settextcolor(0x383226);
+
+        auto& p0 = points.front();
+        auto& p1 = points.back();
+
+        swprintf_s(buffer, L"%.2f", c0);
+        outtextxy(static_cast<int>(p0.x - 40.5), static_cast<int>(p0.y - 14.5), buffer);
+        swprintf_s(buffer, L"%.2f", c1);
+        outtextxy(static_cast<int>(p1.x - 40.5), static_cast<int>(p1.y + 0.5), buffer);
     }
 }
 
