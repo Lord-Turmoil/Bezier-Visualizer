@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 
+
 struct Point
 {
     double x;
@@ -27,10 +28,12 @@ struct Point
         return { x + p.x, y + p.y };
     }
 
+
     Point operator-(const Point& p) const
     {
         return { x - p.x, y - p.y };
     }
+
 
     friend Point operator*(Point lhs, double rhs)
     {
@@ -43,16 +46,19 @@ struct Point
         return { lhs * rhs.x, lhs * rhs.y };
     }
 
+
     Point Cross(const Point& p) const
     {
         return { x * p.y - y * p.x, y * p.x - x * p.y };
     }
+
 
     double Mod() const
     {
         return std::sqrt(x * x + y * y);
     }
 };
+
 
 /// \brief Calculate the combination number of n and k.
 /// \param n The number of elements.
@@ -71,6 +77,39 @@ void InitControlLines(std::vector<std::vector<Point>>* lines, const std::vector<
 /// \param c1 Out Curvature at the ending point.
 /// \return Whether curvature is valid.
 bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1);
+
+/// \brief C++ Wrapping for \see InterPTC.
+bool InterpolateWithBezierCurve(
+    const Point& p0,
+    const Point& p1,
+    const Point& v0,
+    const Point& v1,
+    double c0,
+    double c1, std::vector<Point>* points);
+
+extern "C"
+{
+    const int MAX_CONTROL_POINTS = 10;
+
+    /// \brief Interpolate points with Bezier curve.
+    /// \param p1 Starting point.
+    /// \param p2 Ending point.
+    /// \param v1 Starting tangent vector.
+    /// \param v2 Ending tangent vector.
+    /// \param c1 Curvature at the starting point.
+    /// \param c2 Curvature at the ending point.
+    /// \param control_points Control points of Bezier curve.
+    /// \return The power of Bezier curve.
+    int InterpPTC(
+        double p1[2],
+        double p2[2],
+        double v1[2],
+        double v2[2],
+        double c1,
+        double c2,
+        double(*control_points)[2]);
+}
+
 
 #ifdef _DEBUG
 #pragma comment(lib, "lib/Debug/bezier_b.lib")

@@ -1,4 +1,7 @@
+#include "HelpInterface.h"
 #include "Macros.h"
+#include "MainInterface.h"
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -18,4 +21,40 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     app->Run();
 
     return 0;
+}
+
+AbstractInterface* LoadInterface(XMLElement* node)
+{
+    /*
+    **	<IntfName name="">
+    **		<Widget>
+    **		</Widget>
+    **	</IntfName>
+    */
+    const char* name = node->Name();
+
+    AbstractInterface* intf = nullptr;
+    if (_STR_SAME(name, "Main"))
+    {
+        intf = new MainInterface();
+    }
+    else if (_STR_SAME(name, "Help"))
+    {
+        intf = new HelpInterface();
+    }
+    else
+    {
+        LOG_ERROR(INVALID_ATTRIBUTE, "type", name);
+    }
+
+    if (intf)
+    {
+        if (!intf->Load(node))
+        {
+            delete intf;
+            return nullptr;
+        }
+    }
+
+    return intf;
 }

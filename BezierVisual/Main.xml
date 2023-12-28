@@ -4,23 +4,16 @@
     <!-- Main -->
     <Main name="Main">
         <Widgets>
-            <!-- Help Text -->
-            <Static name="help" layer="100" pos="10 10">
-                <Drawer>
-                    <Text width="300" height="30" justified="false" font-size="24" font="Segoe UI" color="#000000">Left click to create control point</Text>
-                </Drawer>
-            </Static>
-
-            <Static name="split" layer="100" pos="600 0">
+            <Static name="split" layer="5" pos="600 0">
                 <Drawer>
                     <Rectangle width="4" height="600" focus="2 0" filled="true" fill-color="#000000" border="0"></Rectangle>
                 </Drawer>
             </Static>
 
             <!-- Controls -->
-            <!-- Step slider -->
 
-            <Slider name="step-slider" pos="30 560" layer="100" value="1.0">
+            <!-- Step slider -->
+            <Slider name="step-slider" pos="30 560" layer="5" value="1.0">
                 <Block>
                     <Button name="" float="true" pos="0% 0%">
                         <Up>
@@ -40,14 +33,40 @@
                     <Trigger type="rect" width="450" height="20" focus="5 5"></Trigger>
                 </BarTrigger>
             </Slider>
-            <Static name="step-text" pos="460 550" layer="100">
+            <Static name="step-text" pos="460 550" layer="5">
                 <Drawer>
                     <Text width="150" height="30" font-size="28" font="Segoe UI" color="#000000">t = 1.00</Text>
                 </Drawer>
             </Static>
+
+            <!-- Interpolate Button -->
+            <Button name="interpolate" pos="620 540">
+                <Up>
+                    <Rectangle width="100" height="40" line-color="#9E9E9E" fill-color="#D0D0D0" border="4">
+                        <Text width="104" height="44" font-size="24" font="Segoe UI" color="#000000">Interpolate</Text>
+                    </Rectangle>
+                </Up>
+                <Down>
+                    <Rectangle width="100" height="40" line-color="#9E9E9E" fill-color="#BDBDBD" border="4">
+                        <Text width="104" height="44" font-size="24" font="Segoe UI" color="#000000">Interpolate</Text>
+                    </Rectangle>
+                </Down>
+                <Hover>
+                    <Rectangle width="100" height="40" line-color="#9E9E9E" fill-color="#EFEFEF" border="4">
+                        <Text width="104" height="44" font-size="24" font="Segoe UI" color="#000000">Interpolate</Text>
+                    </Rectangle>
+                </Hover>
+                <Trigger>
+                    <Trigger type="rect" width="104" height="44" focus="2 2"></Trigger>
+                </Trigger>
+            </Button>
+            
             <!-- Keyboard Actions -->
             <Detector name="exit">
                 <Trigger type="key" vkey="0x1B"></Trigger>
+            </Detector>
+            <Detector name="help">
+                <Trigger type="key" vkey="0x48"></Trigger>
             </Detector>
             <Detector name="clear">
                 <Trigger type="key" vkey="0x20"></Trigger>

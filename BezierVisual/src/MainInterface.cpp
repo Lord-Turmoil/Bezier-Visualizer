@@ -53,6 +53,8 @@ void MainInterface::BindEvents()
 {
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("exit"))
             ->OnTriggered(GetTerminator(this));
+    dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("help"))
+            ->OnTriggered([this] { SetSubInterface(Application::GetInstance()->GetInterface("Help")); });
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("clear"))
             ->OnTriggered([this] { _impl->ClearControlPoints(); });
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("toggle-coord"))
@@ -130,32 +132,3 @@ void MainInterface::_OnSlide(double value) const
         ->GetDrawer())->SetText(buffer);
 }
 
-
-AbstractInterface* LoadInterface(XMLElement* node)
-{
-    /*
-    **	<IntfName name="">
-    **		<Widget>
-    **		</Widget>
-    **	</IntfName>
-    */
-    const char* name = node->Name();
-
-    AbstractInterface* intf = nullptr;
-    if (_STR_SAME(name, "Main"))
-        intf = new MainInterface();
-    else
-        LOG_ERROR(INVALID_ATTRIBUTE, "type", name);
-
-    if (intf)
-    {
-        // intf->SetWidgetManager(new WidgetManager());
-        if (!intf->Load(node))
-        {
-            delete intf;
-            return nullptr;
-        }
-    }
-
-    return intf;
-}

@@ -24,6 +24,9 @@
     <ClCompile Include="src\BezierImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\HelpInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Macros.h">
@@ -35,9 +38,13 @@
     <ClInclude Include="inc\BezierImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\HelpInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UIConfig.xml" />
     <Xml Include="Main.xml" />
+    <Xml Include="Help.xml" />
   </ItemGroup>
 </Project>

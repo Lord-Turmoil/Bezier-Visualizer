@@ -149,16 +149,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\HelpInterface.cpp" />
     <ClCompile Include="src\BezierImpl.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\BezierImpl.h" />
+    <ClInclude Include="inc\HelpInterface.h" />
     <ClInclude Include="inc\Macros.h" />
     <ClInclude Include="inc\MainInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Help.xml" />
     <Xml Include="Main.xml" />
     <Xml Include="UIConfig.xml" />
   </ItemGroup>
