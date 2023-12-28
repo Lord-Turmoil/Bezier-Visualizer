@@ -15,18 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainInterface.cpp">
+    <ClCompile Include="src\MainInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BezierImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Macros.h">
+    <ClInclude Include="inc\Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainInterface.h">
+    <ClInclude Include="inc\MainInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\BezierImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

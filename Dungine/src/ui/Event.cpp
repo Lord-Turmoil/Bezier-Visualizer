@@ -48,68 +48,68 @@ static int ACTIVE_KEY_NUM;
  *============================================================================*/
 void Event::PeekEvent()
 {
-	// Window message.
-	ExMessage msg;
-	while (peekmessage(&msg, EX_WINDOW | EX_MOUSE))
-	{
-		if (msg.message == WM_ACTIVATE)
-		{
-			if (LOWORD(msg.wParam) == WA_INACTIVE)
-				m_isFocus = false;
-			else
-				m_isFocus = true;
-			FlushEvent();
-		}
-	}
+    // Window message.
+    ExMessage msg;
+    while (peekmessage(&msg, EX_WINDOW))
+    {
+        if (msg.message == WM_ACTIVATE)
+        {
+            if (LOWORD(msg.wParam) == WA_INACTIVE)
+                m_isFocus = false;
+            else
+                m_isFocus = true;
+            FlushEvent();
+        }
+    }
 
-	if (!m_isFocus)
-		return;
+    if (!m_isFocus)
+        return;
 
-	// keyboard message
-	for (int i = 0; i < ACTIVE_KEY_NUM; i++)
-	{
-		int key = ACTIVE_KEY_LIST[i];
-		if (_KEY_DOWN(key))		// If the key is already down
-		{
-			if (m_instantKey[key])
-				m_sluggishKey[key] = false;
-			else
-				m_instantKey[key] = m_sluggishKey[key] = true;
-		}
-		else
-			m_instantKey[key] = m_sluggishKey[key] = false;
-	}
+    // keyboard message
+    for (int i = 0; i < ACTIVE_KEY_NUM; i++)
+    {
+        int key = ACTIVE_KEY_LIST[i];
+        if (_KEY_DOWN(key))		// If the key is already down
+        {
+            if (m_instantKey[key])
+                m_sluggishKey[key] = false;
+            else
+                m_instantKey[key] = m_sluggishKey[key] = true;
+        }
+        else
+            m_instantKey[key] = m_sluggishKey[key] = false;
+    }
 
-	// Mouse message.
-	if (_KEY_DOWN(VK_LBUTTON))
-	{
-		if (m_instantKey[VK_LBUTTON])
-		{
-			m_sluggishKey[VK_LBUTTON] = false;
-			m_mouseDown = false;
-		}
-		else
-		{
-			m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = true;
-			m_mouseDown = true;
-		}
-		m_mouseUp = false;
-	}
-	else
-	{
-		if (m_instantKey[VK_LBUTTON] && !m_mouseUp)
-			m_mouseUp = true;
-		else
-			m_mouseUp = false;
-		m_mouseDown = false;
-		m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = false;
-	}
+    // Mouse message.
+    if (_KEY_DOWN(VK_LBUTTON))
+    {
+        if (m_instantKey[VK_LBUTTON])
+        {
+            m_sluggishKey[VK_LBUTTON] = false;
+            m_mouseDown = false;
+        }
+        else
+        {
+            m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = true;
+            m_mouseDown = true;
+        }
+        m_mouseUp = false;
+    }
+    else
+    {
+        if (m_instantKey[VK_LBUTTON] && !m_mouseUp)
+            m_mouseUp = true;
+        else
+            m_mouseUp = false;
+        m_mouseDown = false;
+        m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = false;
+    }
 
-	POINT point;
-	GetCursorPos(&point);
-	ScreenToClient(GetHWnd(), &point);
-	m_mouse.x = (int)point.x;
-	m_mouse.y = (int)point.y;
+    POINT point;
+    GetCursorPos(&point);
+    ScreenToClient(GetHWnd(), &point);
+    m_mouse.x = (int)point.x;
+    m_mouse.y = (int)point.y;
 }
 
 
@@ -129,11 +129,11 @@ void Event::PeekEvent()
  *============================================================================*/
 void Event::FlushEvent()
 {
-	for (int i = 0; i < ACTIVE_KEY_NUM; i++)
-		m_instantKey[ACTIVE_KEY_LIST[i]] = m_sluggishKey[ACTIVE_KEY_LIST[i]] = false;
-	m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = false;
+    for (int i = 0; i < ACTIVE_KEY_NUM; i++)
+        m_instantKey[ACTIVE_KEY_LIST[i]] = m_sluggishKey[ACTIVE_KEY_LIST[i]] = false;
+    m_instantKey[VK_LBUTTON] = m_sluggishKey[VK_LBUTTON] = false;
 
-	m_mouseDown = m_mouseUp = false;
+    m_mouseDown = m_mouseUp = false;
 }
 
 
@@ -153,12 +153,14 @@ void Event::FlushEvent()
  *============================================================================*/
 Event::Event() : m_isFocus(true)
 {
-	ACTIVE_KEY_NUM = 0;
-	ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_ESCAPE;
-	ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_CONTROL;
-	ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_SPACE;
-	for (int key = VK_A; key <= VK_Z; key++)
-		ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = key;
+    ACTIVE_KEY_NUM = 0;
+    ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_ESCAPE;
+    ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_CONTROL;
+    ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_SPACE;
+    ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_RBUTTON;
+    ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = VK_SHIFT;
+    for (int key = VK_A; key <= VK_Z; key++)
+        ACTIVE_KEY_LIST[ACTIVE_KEY_NUM++] = key;
 
-	FlushEvent();
+    FlushEvent();
 }

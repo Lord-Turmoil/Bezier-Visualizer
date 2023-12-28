@@ -40,45 +40,47 @@ const int VIRTUAL_KEY_NUM = 128;
 */
 class Event : public SingletonHungry<Event>
 {
-	friend class SingletonHungry<Event>;
+    friend class SingletonHungry<Event>;
 public:
-	void PeekEvent();
+    void PeekEvent();
 
-	// This is deprecated since it won't peek mouse event.
-	void PeekEvent(void (*handler)(bool*, bool*))
-	{
-		handler(m_instantKey, m_sluggishKey);
-	}
+    // This is deprecated since it won't peek mouse event.
+    void PeekEvent(void (*handler)(bool*, bool*))
+    {
+        handler(m_instantKey, m_sluggishKey);
+    }
 
-	void FlushEvent();
-	
-	/*
-	** Warning: These two doen't check for validation of vKey!
-	*/
-	bool Instant(int vKey) const { return m_instantKey[vKey]; }
-	bool Sluggish(int vKey) const { return m_sluggishKey[vKey]; }
-	bool InstantCtrl(int vKey) const { return m_instantKey[VK_CONTROL] && m_instantKey[vKey]; }
-	bool SluggishCtrl(int vKey) const { return m_instantKey[VK_CONTROL] && m_sluggishKey[vKey]; }
+    void FlushEvent();
 
-	const Coordinate& Mouse() const { return m_mouse; }
-	int MouseX() const { return m_mouse.x; }
-	int MouseY() const { return m_mouse.y; }
+    /*
+    ** Warning: These two don't check for validation of vKey!
+    */
+    bool Instant(int vKey) const { return m_instantKey[vKey]; }
+    bool Sluggish(int vKey) const { return m_sluggishKey[vKey]; }
+    bool InstantCtrl(int vKey) const { return m_instantKey[VK_CONTROL] && m_instantKey[vKey]; }
+    bool SluggishCtrl(int vKey) const { return m_sluggishKey[VK_CONTROL] && m_sluggishKey[vKey]; }
+    bool InstantShift(int vKey) const { return m_instantKey[VK_SHIFT] && m_instantKey[vKey]; }
+    bool SluggishShift(int vKey) const { return m_sluggishKey[VK_SHIFT] && m_sluggishKey[vKey]; }
 
-	bool MouseDown() const { return m_mouseDown; }
-	bool MouseUp() const { return m_mouseUp; }
+    const Coordinate& Mouse() const { return m_mouse; }
+    int MouseX() const { return m_mouse.x; }
+    int MouseY() const { return m_mouse.y; }
 
-	bool IsFocus() const { return m_isFocus; }
+    bool MouseDown() const { return m_mouseDown; }
+    bool MouseUp() const { return m_mouseUp; }
+
+    bool IsFocus() const { return m_isFocus; }
 
 private:
-	Event();
-	~Event() {}
+    Event();
+    ~Event() {}
 
-	bool m_instantKey[VIRTUAL_KEY_NUM];
-	bool m_sluggishKey[VIRTUAL_KEY_NUM];
-	Coordinate m_mouse;
-	bool m_mouseDown : 1;
-	bool m_mouseUp : 1;
-	bool m_isFocus : 1;
+    bool m_instantKey[VIRTUAL_KEY_NUM];
+    bool m_sluggishKey[VIRTUAL_KEY_NUM];
+    Coordinate m_mouse;
+    bool m_mouseDown : 1;
+    bool m_mouseUp : 1;
+    bool m_isFocus : 1;
 };
 
 #if 0

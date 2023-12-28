@@ -40,14 +40,20 @@
                     <Trigger type="rect" width="450" height="20" focus="5 5"></Trigger>
                 </BarTrigger>
             </Slider>
-            <Static name="step-text" pos="450 550" layer="100">
+            <Static name="step-text" pos="460 550" layer="100">
                 <Drawer>
-                    <Text width="150" height="30" font-size="28" font="Segoe UI" color="#000000">t = 1.0</Text>
+                    <Text width="150" height="30" font-size="28" font="Segoe UI" color="#000000">t = 1.00</Text>
                 </Drawer>
             </Static>
             <!-- Keyboard Actions -->
             <Detector name="exit">
                 <Trigger type="key" vkey="0x1B"></Trigger>
+            </Detector>
+            <Detector name="clear">
+                <Trigger type="key" vkey="0x20"></Trigger>
+            </Detector>
+            <Detector name="toggle-coord">
+                <Trigger type="key" vkey="0x43"></Trigger>
             </Detector>
         </Widgets>
     </Main>
