@@ -47,9 +47,12 @@ struct Point
     }
 
 
+    /// \brief This is not strict cross product. Only for 2D vector.
+    /// \param p rhs
+    /// \return Cross
     Point Cross(const Point& p) const
     {
-        return { x * p.y - y * p.x, y * p.x - x * p.y };
+        return { x * p.y - y * p.x, 0 };
     }
 
 
@@ -90,6 +93,8 @@ bool InterpolateWithBezierCurve(
 extern "C"
 {
     const int MAX_CONTROL_POINTS = 10;
+
+    double CalcCurvature(double p1[2], double p2[2], double p3[2], int begin);
 
     /// \brief Interpolate points with Bezier curve.
     /// \param p1 Starting point.

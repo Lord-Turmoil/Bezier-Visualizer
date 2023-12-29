@@ -68,27 +68,19 @@ bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1
         return true;
     }
 
-    // P[0...n]
-    n--;
-
-
     if (c0)
     {
-        double k0 = static_cast<double>(n - 1) / static_cast<double>(n);
-        double t0 = (points[1] - points[0]).Cross(points[2] - points[1]).Mod();
-        double t1 = (points[1] - points[0]).Mod();
-        t1 = t1 * t1 * t1;
-        k0 = k0 * t0 / t1;
-        *c0 = k0 * 100;
+        double _p1[2] = { points[0].x, points[0].y };
+        double _p2[2] = { points[1].x, points[1].y };
+        double _p3[2] = { points[2].x, points[2].y };
+        *c0 = CalcCurvature(_p1, _p2, _p3, 1);
     }
     if (c1)
     {
-        double k1 = static_cast<double>(n - 1) / static_cast<double>(n);
-        double t0 = (points[n - 1] - points[n - 2]).Cross(points[n] - points[n - 1]).Mod();
-        double t1 = (points[n] - points[n - 1]).Mod();
-        t1 = t1 * t1 * t1;
-        k1 = k1 * t0 / t1;
-        *c1 = k1 * 100;
+        double _p1[2] = { points[n - 3].x, points[n - 3].y };
+        double _p2[2] = { points[n - 2].x, points[n - 2].y };
+        double _p3[2] = { points[n - 1].x, points[n - 1].y };
+        *c1 = CalcCurvature(_p1, _p2, _p3, 0);
     }
 
     return true;
@@ -127,37 +119,31 @@ bool InterpolateWithBezierCurve(const Point& p0, const Point& p1, const Point& v
 
 extern "C"
 {
-    int InterpPTC(double p1[2], double p2[2], double v1[2], double v2[2], double c1, double c2,
-                  double(*control_points)[2])
+    double CalcCurvature(double p1[2], double p2[2], double p3[2], int begin)
     {
-        double a = 2 * p1[0] - 2 * p2[0] + c1 * v1[0] + c2 * v2[0];
-        double b = -3 * p1[0] + 3 * p2[0] - 2 * c1 * v1[0] - c2 * v2[0];
-        double c = c1 * v1[0];
-        double d = p1[0];
+        double v1[2] = { p2[0] - p1[0], p2[1] - p1[1] };
+        double v2[2] = { p3[0] - p2[0], p3[1] - p2[1] };
+        double cross[2] = { v1[0] * v2[1] - v1[1] * v2[0], 0 };
 
-        double e = 2 * p1[1] - 2 * p2[1] + c1 * v1[1] + c2 * v2[1];
-        double f = -3 * p1[1] + 3 * p2[1] - 2 * c1 * v1[1] - c2 * v2[1];
-        double g = c1 * v1[1];
-        double h = p1[1];
+        double k = sqrt(cross[0] * cross[0] + cross[1] * cross[1]);
+        double t = begin ? sqrt(v1[0] * v1[0] + v1[1] * v1[1]) : sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
+        t = t * t * t;
+        k = k / t;
+        return k * 100.0;
+    }
 
-        double t = 0.0;
-        double dt = 0.01;
-        int i = 0;
-        while (t < 1.0)
-        {
-            double x = a * t * t * t + b * t * t + c * t + d;
-            double y = e * t * t * t + f * t * t + g * t + h;
-            control_points[i][0] = x;
-            control_points[i][1] = y;
-            t += dt;
-            i++;
-            if (i >= MAX_CONTROL_POINTS)
-            {
-                // Failed!
-                return -1;
-            }
-        }
+    int InterpPTC(
+        double p1[2],
+        double p2[2],
+        double v1[2],
+        double v2[2],
+        double c1,
+        double c2,
+        double(*control_points)[2])
+    {
+        // Interpolate with 4 points Bezier curve.
+        // p1, p2 are the start and end points.
 
-        return i - 1;
+        return -1;
     }
 }

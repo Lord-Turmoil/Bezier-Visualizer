@@ -21,6 +21,16 @@
                                        border="2">
                             </Rectangle>
                         </Up>
+                        <Down>
+                            <Rectangle width="20" height="30" focus="11 16" line-color="#9E9E9E" fill-color="#BDBDBD"
+                                       border="2">
+                            </Rectangle>
+                        </Down>
+                        <Hover>
+                            <Rectangle width="20" height="30" focus="11 16" line-color="#9E9E9E" fill-color="#EFEFEF"
+                                       border="2">
+                            </Rectangle>
+                        </Hover>
                         <Trigger>
                             <Trigger type="rect" width="22" height="32" focus="11 16"></Trigger>
                         </Trigger>
@@ -57,7 +67,7 @@
                     </Rectangle>
                 </Hover>
                 <Trigger>
-                    <Trigger type="rect" width="104" height="44" focus="2 2"></Trigger>
+                    <Trigger type="rect" width="104" height="44"></Trigger>
                 </Trigger>
             </Button>
             

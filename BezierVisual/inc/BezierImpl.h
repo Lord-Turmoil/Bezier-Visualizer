@@ -12,8 +12,8 @@ class BezierImpl
 public:
     BezierImpl();
 
-    void AddControlPoint(const Point& point);
-    void AddControlPoint(double x, double y) { AddControlPoint(Point(x, y)); }
+    Point* AddControlPoint(const Point& point);
+    Point* AddControlPoint(double x, double y) { return AddControlPoint(Point(x, y)); }
     void ClearControlPoints() { _controlPoints.clear(); }
     void RemoveControlPoint(Point* point);
 
@@ -37,6 +37,8 @@ public:
     double FindAttachY(double y) const;
 
     void Render();
+
+    const std::vector<Point>& GetControlPoints() const { return _controlPoints; }
 
 private:
     std::vector<Point> _controlPoints;

@@ -5,15 +5,22 @@
 const Rect MainInterface::ACTIVE_RANGE(0, 0, 600, 550);
 
 
-MainInterface::MainInterface() : _impl(new BezierImpl())
+MainInterface::MainInterface() : _impl(new BezierImpl()), _result(new BezierImpl())
 {
     _drawPanel.GetImage()->Resize(600, 550);
     Device::GetInstance()->SetTargetImage(_drawPanel.GetImage());
     setbkcolor(WHITE);
     setbkmode(TRANSPARENT);
+
+    _resultPanel.GetImage()->Resize(600, 550);
+    Device::GetInstance()->SetTargetImage(_resultPanel.GetImage());
+    setbkcolor(WHITE);
+    setbkmode(TRANSPARENT);
+
     Device::GetInstance()->SetTargetImage();
 
     _drawPanel.SetCoord(0, 0);
+    _resultPanel.SetCoord(600, 0);
 }
 
 
@@ -28,9 +35,12 @@ void MainInterface::Draw()
     const auto device = Device::GetInstance();
     device->SetTargetImage(_drawPanel.GetImage());
     _impl->Render();
+    device->SetTargetImage(_resultPanel.GetImage());
+    _result->Render();
     device->SetTargetImage();
 
-    Device::GetInstance()->AddSymbol(&_drawPanel);
+    device->AddSymbol(&_drawPanel);
+    device->AddSymbol(&_resultPanel);
 
     AbstractInterface::Draw();
 }
@@ -52,29 +62,36 @@ void MainInterface::Draw(IMAGE* pDestImage)
 void MainInterface::BindEvents()
 {
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("exit"))
-            ->OnTriggered(GetTerminator(this));
+        ->OnTriggered(GetTerminator(this));
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("help"))
-            ->OnTriggered([this] { SetSubInterface(Application::GetInstance()->GetInterface("Help")); });
+        ->OnTriggered([this] { SetSubInterface(Application::GetInstance()->GetInterface("Help")); });
+
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("clear"))
-            ->OnTriggered([this] { _impl->ClearControlPoints(); });
+        ->OnTriggered([this] { _impl->ClearControlPoints(); _result->ClearControlPoints(); });
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("toggle-coord"))
-            ->OnTriggered([this] { _impl->ToggleShowCoordinate(); });
+        ->OnTriggered([this] { _impl->ToggleShowCoordinate(); _result->ToggleShowCoordinate(); });
     dynamic_cast<Slider*>(m_pWidgetManager->GetWidget("step-slider"))
-            ->OnChange([this](auto&& ph1) { _OnSlide(std::forward<decltype(ph1)>(ph1)); });
+        ->OnChange([this](auto&& ph1) { _OnSlide(std::forward<decltype(ph1)>(ph1)); });
+
+    dynamic_cast<Button*>(m_pWidgetManager->GetWidget("interpolate"))
+        ->OnClick([this] { _OnInterpolate(); });
 }
 
 
 void MainInterface::Update(Event* evnt)
 {
     AbstractInterface::Update(evnt);
-    _ProcessEvent(evnt);
+    if (!m_pSubIntf)
+    {
+        _ProcessEvent(evnt);
+    }
 }
 
 
 bool MainInterface::_IsInValidRange(int x, int y)
 {
     return x >= 0 && x < _drawPanel.GetImage()->getwidth() &&
-            y >= 0 && y < _drawPanel.GetImage()->getheight();
+        y >= 0 && y < _drawPanel.GetImage()->getheight();
 }
 
 
@@ -84,11 +101,12 @@ void MainInterface::_ProcessEvent(Event* evnt) const
     {
         if (InRectangleStrict(ACTIVE_RANGE, evnt->Mouse()))
         {
-            const auto candidate = _impl->FindCandidatePoint(evnt->MouseX(), evnt->MouseY());
+            auto candidate = _impl->FindCandidatePoint(evnt->MouseX(), evnt->MouseY());
             _impl->SetDraggingPoint(candidate);
             if (!candidate)
             {
-                _impl->AddControlPoint(evnt->MouseX(), evnt->MouseY());
+                candidate = _impl->AddControlPoint(evnt->MouseX(), evnt->MouseY());
+                _impl->SetDraggingPoint(candidate);
             }
         }
     }
@@ -130,5 +148,35 @@ void MainInterface::_OnSlide(double value) const
         dynamic_cast<StaticWidget*>(
             m_pWidgetManager->GetWidget("step-text"))
         ->GetDrawer())->SetText(buffer);
+}
+
+
+void MainInterface::_OnInterpolate() const
+{
+    double c0;
+    double c1;
+
+    const std::vector<Point>& points(_impl->GetControlPoints());
+    if (points.size() < 2)
+    {
+        return;
+    }
+
+    CalculateCurvature(points, &c0, &c1);
+    Point v0 = points[1] - points[0];
+    Point v1 = points[points.size() - 1] - points[points.size() - 2];
+
+    std::vector<Point> interpolatePoints;
+
+    if (!InterpolateWithBezierCurve(points[0], points[points.size() - 1], v0, v1, c0, c1, &interpolatePoints))
+    {
+        return;
+    }
+
+    _result->ClearControlPoints();
+    for (const auto& point : interpolatePoints)
+    {
+        _result->AddControlPoint(point.x, point.y);
+    }
 }
 

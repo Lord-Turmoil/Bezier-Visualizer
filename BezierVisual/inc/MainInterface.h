@@ -27,10 +27,14 @@ private:
     void _ProcessEvent(Event* evnt) const;
 
     void _OnSlide(double value) const;
+    void _OnInterpolate() const;
 
 private:
     BezierImpl* _impl;
+    BezierImpl* _result;
+
     Symbol _drawPanel;
+    Symbol _resultPanel;
 
 private:
     static const Rect ACTIVE_RANGE;

@@ -15,9 +15,10 @@ BezierImpl::BezierImpl() : _draggingPoint(nullptr), _step(1.0), _showCoordinate(
 }
 
 
-void BezierImpl::AddControlPoint(const Point& point)
+Point* BezierImpl::AddControlPoint(const Point& point)
 {
     _controlPoints.push_back(point);
+    return &_controlPoints.back();
 }
 
 
