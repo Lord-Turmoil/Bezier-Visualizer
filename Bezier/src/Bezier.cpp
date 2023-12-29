@@ -232,7 +232,7 @@ extern "C"
         return 3;
 #endif
 
-        // return ERR_OUT_OF_ITERATION;
+        return ERR_OUT_OF_ITERATION;
     }
 
 
@@ -266,13 +266,15 @@ extern "C"
         // If c is too big, make point further.
         if (isnan(c) || c - target > EPS)
         {
-            *step += 1.0;
+            double delta = EPS;
+            *step += delta;
+            delta *= 2.0;
             while (isnan(c) || c > target)
             {
                 res[0] = base[0] + *step * norm[0];
                 res[1] = base[1] + *step * norm[1];
                 c = CalcCurvature(p1, res, p3, begin);
-                *step += 1.0;
+                *step += delta;
             }
             if (!isnan(c) && fabs(c - target) < EPS)
             {

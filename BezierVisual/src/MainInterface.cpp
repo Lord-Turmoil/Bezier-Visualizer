@@ -172,10 +172,13 @@ void MainInterface::_OnInterpolate() const
         const auto staticWidget = dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("error"));
         staticWidget->SetAlpha(255);
         dynamic_cast<TextDrawer*>(staticWidget->GetDrawer())->SetText(buffer);
+
+        dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("success"))->SetAlpha(0);
     }
     else
     {
         dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("error"))->SetAlpha(0);
+        dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("success"))->SetAlpha(255);
     }
 
     _result->ClearControlPoints();

@@ -93,9 +93,9 @@ int InterpolateWithBezierCurve(
 extern "C"
 {
     const int MAX_CONTROL_POINTS = 10;
-    const double EPS = 1e-2;
+    const double EPS = 1e-3;
     const double ZERO = 1e-6;
-    const int MAX_ITERATION = 1000000;
+    const int MAX_ITERATION = 10;
 
     const int ERR_ILLEGAL_ARGUMENT = -100;
     const int ERR_NORM_TOO_SMALL = -101;

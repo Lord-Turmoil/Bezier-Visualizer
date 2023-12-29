@@ -82,7 +82,7 @@
     <IntDir>$(SolutionDir)Build\dist-int\$(ProjectName)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
-    <IncludePath>$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)BezierVisual\inc;$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)Build\lib;$(LibraryPath)</LibraryPath>

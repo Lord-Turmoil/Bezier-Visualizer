@@ -34,25 +34,30 @@
             </Static>
             <Static name="help-4" layer="20" pos="600 260">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press 'C' to toggle coordinate and curvature display</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Hold shift to enable sticky point</Text>
                 </Drawer>
             </Static>
             <Static name="help-5" layer="20" pos="600 290">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press Space to clear canvas</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press 'C' to toggle coordinate and curvature display</Text>
                 </Drawer>
             </Static>
             <Static name="help-6" layer="20" pos="600 320">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Drag the slide bar to see drawing process</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press Space to clear canvas</Text>
                 </Drawer>
             </Static>
             <Static name="help-7" layer="20" pos="600 350">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Click interpolate to interpolate :P</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Drag the slide bar to see drawing process</Text>
                 </Drawer>
             </Static>
             <Static name="help-8" layer="20" pos="600 380">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Click interpolate to interpolate :P</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-9" layer="20" pos="600 410">
                 <Drawer>
                     <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press ESC to exit program</Text>
                 </Drawer>

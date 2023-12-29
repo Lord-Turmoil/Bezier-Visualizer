@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <dungine.h>
 #include <Bezier.h>
+#include <cassert>
 
 const int WIDTH = 1200;
 const int HEIGHT = 600;
