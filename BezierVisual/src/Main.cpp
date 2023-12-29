@@ -8,6 +8,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_ LPWSTR    lpCmdLine,
                       _In_ int       nCmdShow)
 {
+    // Though we don't use speaker, we have to initialize it.
     Speaker::GetInstance()->Create();
 
     // Initialization.
@@ -15,8 +16,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     setbkcolor(WHITE);
     setbkmode(TRANSPARENT);
     auto app = Application::GetInstance();
-    assert(app->Load("UIConfig.xml"));
-    assert(app->Initialize());
+    if (!app->Load("UIConfig.xml"))
+    {
+        return -1;
+    }
+    if (!app->Initialize())
+    {
+        return -2;
+    }
 
     app->Run();
 
