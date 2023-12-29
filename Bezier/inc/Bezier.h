@@ -93,7 +93,7 @@ int InterpolateWithBezierCurve(
 extern "C"
 {
     const int MAX_CONTROL_POINTS = 10;
-    const double EPS = 0.1;
+    const double EPS = 1e-2;
     const double ZERO = 1e-6;
     const int MAX_ITERATION = 1000000;
 
@@ -128,6 +128,7 @@ extern "C"
 
 #ifdef _DEBUG
 #pragma comment(lib, "lib/Debug/bezier_b.lib")
+#define ACCEPT_FAILURE
 #else
 #pragma comment(lib, "lib/Release/bezier.lib")
 #endif

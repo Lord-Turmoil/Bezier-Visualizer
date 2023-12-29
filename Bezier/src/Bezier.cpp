@@ -3,6 +3,8 @@
 
 #include <assert.h>
 
+#include "../../Dungine/inc/game/AbstractComponent.h"
+
 
 int Combination(int n, int k)
 {
@@ -138,8 +140,6 @@ extern "C"
 
 
     /// \brief Interpolate one side.
-    ///     Warning: This function will modify p.
-    /// \param p Base control point. p is one of p1, p2, p3.
     /// \param norm Direction to the point to be interpolated.
     /// \param step Current Step.
     /// \param target Target curvature value.
@@ -152,13 +152,12 @@ extern "C"
     ///      0: already satisfied
     ///      1: new step found
     static int InterpPTCImpl(
-        double p[2],
-        double norm[2],
-        double* step,
-        double target,
         double p1[2],
         double p2[2],
         double p3[2],
+        double norm[2],
+        double* step,
+        double target,
         int begin
     );
 
@@ -170,7 +169,7 @@ extern "C"
         double v2[2],
         double c1,
         double c2,
-        double (*control_points)[2])
+        double(*control_points)[2])
     {
         // Calculate step norm.
         const double v1Mod = sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
@@ -187,16 +186,23 @@ extern "C"
         double right[2] = { p2[0], p2[1] };
         double stepLeft = 0.0;
         double stepRight = 0.0;
-
         for (int i = 0; i < MAX_ITERATION; i++)
         {
-            const int retLeft = InterpPTCImpl(left, v1Norm, &stepLeft, c1, p1, left, right, 1);
-            const int retRight = InterpPTCImpl(right, v2Norm, &stepRight, c2, left, right, p2, 0);
-
-            if (retLeft < 0 || retRight < 0)
+            const int retRight = InterpPTCImpl(p1, left, right, v1Norm, &stepLeft, c1, 1);
+            if (retRight < 0)
             {
-                return ERR_FAILED_TO_INTERPOLATE;
+                return retRight;
             }
+            left[0] = p1[0] + stepLeft * v1Norm[0];
+            left[1] = p1[1] + stepLeft * v1Norm[1];
+
+            const int retLeft = InterpPTCImpl(left, right, p2, v2Norm, &stepRight, c2, 0);
+            if (retLeft < 0)
+            {
+                return retLeft;
+            }
+            right[0] = p2[0] + stepRight * v2Norm[0];
+            right[1] = p2[1] + stepRight * v2Norm[1];
 
             if (retLeft == 0 && retRight == 0)
             {
@@ -213,7 +219,8 @@ extern "C"
             }
         }
 
-        // We still show it.
+        // We still show it if failure accepted.
+#ifdef ACCEPT_FAILURE
         control_points[0][0] = p1[0];
         control_points[0][1] = p1[1];
         control_points[1][0] = left[0];
@@ -223,6 +230,7 @@ extern "C"
         control_points[3][0] = p2[0];
         control_points[3][1] = p2[1];
         return 3;
+#endif
 
         // return ERR_OUT_OF_ITERATION;
     }
@@ -235,13 +243,12 @@ extern "C"
 
 
     static int InterpPTCImpl(
-        double p[2],
-        double norm[2],
-        double* step,
-        double target,
         double p1[2],
         double p2[2],
         double p3[2],
+        double norm[2],
+        double* step,
+        double target,
         int begin
     )
     {
@@ -254,23 +261,19 @@ extern "C"
             return 0;
         }
 
-        const double base[2] = { p[0], p[1] };
-
+        double res[2];
+        const double* const base = begin ? p1 : p3;
         // If c is too big, make point further.
         if (isnan(c) || c - target > EPS)
         {
-            double delta = *step + 1.0;
-            double lastDelta = *step;
+            *step += 1.0;
             while (isnan(c) || c > target)
             {
-                p[0] = base[0] + delta * norm[0];
-                p[1] = base[1] + delta * norm[1];
-                lastDelta = delta;
-                delta += 1.0;
-                c = CalcCurvature(p1, p2, p3, begin);
+                res[0] = base[0] + *step * norm[0];
+                res[1] = base[1] + *step * norm[1];
+                c = CalcCurvature(p1, res, p3, begin);
+                *step += 1.0;
             }
-            *step = delta;
-
             if (!isnan(c) && fabs(c - target) < EPS)
             {
                 return 1;
@@ -284,9 +287,10 @@ extern "C"
         while (right - left > ZERO)
         {
             const double mid = left + (right - left) * 0.5;
-            p[0] = base[0] + mid * norm[0];
-            p[1] = base[1] + mid * norm[1];
-            c = CalcCurvature(p1, p2, p3, begin);
+            res[0] = base[0] + mid * norm[0];
+            res[1] = base[1] + mid * norm[1];
+
+            c = CalcCurvature(p1, res, p3, begin);
             if (IsSatisfied(c, target))
             {
                 *step = mid;
@@ -301,6 +305,8 @@ extern "C"
                 left = mid;
             }
         }
+
+        *step = left;
 
         return ERR_DICHOTOMY_FAILED;
     }
