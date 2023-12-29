@@ -71,15 +71,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Publish\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\bin-int\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Build\dist\</OutDir>
+    <IntDir>$(SolutionDir)Build\dist-int\$(ProjectName)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
     <IncludePath>$(SolutionDir)BezierVisual\inc;$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Publish\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\bin-int\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Publish\</OutDir>
+    <IntDir>$(SolutionDir)Build\dist-int\$(ProjectName)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)Build;$(LibraryPath)</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
     <IncludePath>$(SolutionDir)Bezier\inc;$(SolutionDir)Dungine\inc;$(IncludePath)</IncludePath>
@@ -131,6 +131,12 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y  "$(SolutionDir)\Build\lib\fmod.dll"  "$(SolutionDir)Build\dist\"
+xcopy /y  "$(ProjectDir)\Main.xml" "$(SolutionDir)Build\dist\"
+xcopy /y  "$(ProjectDir)\Help.xml" "$(SolutionDir)Build\dist\"
+xcopy /y  "$(ProjectDir)\UIConfig.xml" "$(SolutionDir)Build\dist\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -147,6 +153,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y  "$(SolutionDir)\Build\lib\fmod.dll"  "$(SolutionDir)Publish\"
+xcopy /y  "$(ProjectDir)\Main.xml" "$(SolutionDir)Publish\"
+xcopy /y  "$(ProjectDir)\Help.xml" "$(SolutionDir)Publish\"
+xcopy /y  "$(ProjectDir)\UIConfig.xml" "$(SolutionDir)Publish\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\HelpInterface.cpp" />
