@@ -9,7 +9,12 @@
                     <Rectangle width="4" height="600" focus="2 0" filled="true" fill-color="#000000" border="0"></Rectangle>
                 </Drawer>
             </Static>
-
+            <Static name="help-text" pos="10 10" layer="5">
+                <Drawer>
+                    <Text width="300" height="30" justified="false" font-size="28" font="Segoe UI" color="#000000">Press 'H' to see help</Text>
+                </Drawer>
+            </Static>
+            
             <!-- Controls -->
 
             <!-- Step slider -->

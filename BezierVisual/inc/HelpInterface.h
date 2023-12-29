@@ -10,6 +10,9 @@ class HelpInterface : public AbstractInterface
 {
 public:
     void BindEvents() override;
+
+private:
+    static void _OpenGitHub();
 };
 
 #endif

@@ -6,7 +6,9 @@
             <!-- Background -->
             <Static name="background" layer="10" pos="600 300">
                 <Drawer>
-                    <Rectangle width="640" height="400"  focus="322 202"  fill-color="#DFDFDF" line-color="#3F3F3F" border="4"></Rectangle>
+                    <Rectangle width="640" height="400" focus="322 202" fill-color="#DFDFDF" line-color="#3F3F3F"
+                               border="4">
+                    </Rectangle>
                 </Drawer>
             </Static>
 
@@ -17,17 +19,83 @@
             </Static>
             <Static name="help-1" layer="20" pos="600 170">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Left click to create control point</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Left-click on canvas to create control point</Text>
                 </Drawer>
             </Static>
             <Static name="help-2" layer="20" pos="600 200">
                 <Drawer>
-                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Left click to create control point</Text>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Right-click on a control point to delete it</Text>
                 </Drawer>
             </Static>
+            <Static name="help-3" layer="20" pos="600 230">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Drag a control point to move it</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-4" layer="20" pos="600 260">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press 'C' to toggle coordinate and curvature display</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-5" layer="20" pos="600 290">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press Space to clear canvas</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-6" layer="20" pos="600 320">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Drag the slide bar to see drawing process</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-7" layer="20" pos="600 350">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Click interpolate to interpolate :P</Text>
+                </Drawer>
+            </Static>
+            <Static name="help-8" layer="20" pos="600 380">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Press ESC to exit program</Text>
+                </Drawer>
+            </Static>
+
+            <Static name="build" layer="20" pos="600 440">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">----- Powered by Dungine -----</Text>
+                </Drawer>
+            </Static>
+            <Static name="copy" layer="20" pos="600 470">
+                <Drawer>
+                    <Text width="640" height="30" focus="320 15" font-size="24" font="Segoe UI" color="#000000">Copyright (C) Tony's Studio 2023</Text>
+                </Drawer>
+            </Static>
+
+            <!-- Github -->
+            <Button name="github" pos="800 455">
+                <Up>
+                    <Text width="100" height="30" font-size="28" font="Segoe UI" color="#1A237E">GitHub</Text>
+                </Up>
+                <Down>
+                    <Text width="100" height="30" font-size="28" font="Segoe UI" color="#7986CB">GitHub</Text>
+                </Down>
+                <Hover>
+                    <Text width="100" height="30" font-size="28" font="Segoe UI" color="#3949AB">GitHub</Text>
+                </Hover>
+                <Trigger>
+                    <Trigger type="rect" width="100" height="30"></Trigger>
+                </Trigger>
+            </Button>
+            <Static name="underline" pos="820 480">
+                <Drawer>
+                    <Rectangle width="60" height="1" filled="true" fill-color="#1A237E" border="0"></Rectangle>
+                </Drawer>
+            </Static>
+
             <!-- Trigger -->
-            <Detector name="exit">
+            <Detector name="exit-1">
                 <Trigger type="key" vkey="0x1B"></Trigger>
+            </Detector>
+            <Detector name="exit-2">
+                <Trigger type="key" vkey="0x48"></Trigger>
             </Detector>
         </Widgets>
     </Help>
