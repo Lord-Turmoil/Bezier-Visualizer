@@ -70,6 +70,13 @@
                     <Trigger type="rect" width="104" height="44"></Trigger>
                 </Trigger>
             </Button>
+
+            <!-- Error prompt -->
+            <Static name="error" pos="800 540" alpha="0">
+                <Drawer>
+                    <Text width="100" height="40" font-size="28" font="Segoe UI" color="#F44336">Error</Text>
+                </Drawer>
+            </Static>
             
             <!-- Keyboard Actions -->
             <Detector name="exit">

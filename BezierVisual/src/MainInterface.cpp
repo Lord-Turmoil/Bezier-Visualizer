@@ -3,7 +3,7 @@
 #include "BezierImpl.h"
 
 const Rect MainInterface::ACTIVE_RANGE(0, 0, 600, 550);
-
+static char buffer[32];
 
 MainInterface::MainInterface() : _impl(new BezierImpl()), _result(new BezierImpl())
 {
@@ -139,8 +139,6 @@ void MainInterface::_ProcessEvent(Event* evnt) const
 
 void MainInterface::_OnSlide(double value) const
 {
-    static char buffer[32];
-
     _impl->SetStep(value);
 
     sprintf_s(buffer, "t = %.2f", value);
@@ -167,10 +165,17 @@ void MainInterface::_OnInterpolate() const
     Point v1 = points[points.size() - 1] - points[points.size() - 2];
 
     std::vector<Point> interpolatePoints;
-
-    if (!InterpolateWithBezierCurve(points[0], points[points.size() - 1], v0, v1, c0, c1, &interpolatePoints))
+    int ret = InterpolateWithBezierCurve(points[0], points[points.size() - 1], v0, v1, c0, c1, &interpolatePoints);
+    if (ret < 0)
     {
-        return;
+        sprintf_s(buffer, "Error: %d", ret);
+        const auto staticWidget = dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("error"));
+        staticWidget->SetAlpha(255);
+        dynamic_cast<TextDrawer*>(staticWidget->GetDrawer())->SetText(buffer);
+    }
+    else
+    {
+        dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("error"))->SetAlpha(0);
     }
 
     _result->ClearControlPoints();

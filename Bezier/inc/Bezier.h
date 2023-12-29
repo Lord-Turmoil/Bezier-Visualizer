@@ -82,7 +82,7 @@ void InitControlLines(std::vector<std::vector<Point>>* lines, const std::vector<
 bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1);
 
 /// \brief C++ Wrapping for \see InterPTC.
-bool InterpolateWithBezierCurve(
+int InterpolateWithBezierCurve(
     const Point& p0,
     const Point& p1,
     const Point& v0,
@@ -93,6 +93,16 @@ bool InterpolateWithBezierCurve(
 extern "C"
 {
     const int MAX_CONTROL_POINTS = 10;
+    const double EPS = 1e-3;
+    const double ZERO = 1e-6;
+    const int MAX_ITERATION = 1000000;
+
+    const int ERR_ILLEGAL_ARGUMENT = -100;
+    const int ERR_NORM_TOO_SMALL = -101;
+    const int ERR_OUT_OF_ITERATION = -102;
+
+    const int ERR_FAILED_TO_INTERPOLATE = -111;
+    const int ERR_DICHOTOMY_FAILED = -112;
 
     double CalcCurvature(double p1[2], double p2[2], double p3[2], int begin);
 
@@ -104,7 +114,7 @@ extern "C"
     /// \param c1 Curvature at the starting point.
     /// \param c2 Curvature at the ending point.
     /// \param control_points Control points of Bezier curve.
-    /// \return The power of Bezier curve.
+    /// \return The power of Bezier curve. Negative to indicate error.
     int InterpPTC(
         double p1[2],
         double p2[2],

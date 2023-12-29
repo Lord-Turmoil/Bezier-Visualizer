@@ -1,6 +1,8 @@
 #include <vector>
 #include "../inc/Bezier.h"
 
+#include <assert.h>
+
 
 int Combination(int n, int k)
 {
@@ -87,12 +89,12 @@ bool CalculateCurvature(const std::vector<Point>& points, double* c0, double* c1
 }
 
 
-bool InterpolateWithBezierCurve(const Point& p0, const Point& p1, const Point& v0, const Point& v1, double c0,
-                                double c1, std::vector<Point>* points)
+int InterpolateWithBezierCurve(const Point& p0, const Point& p1, const Point& v0, const Point& v1, double c0,
+                               double c1, std::vector<Point>* points)
 {
     if (!points)
     {
-        return false;
+        return 0;
     }
 
     double _p0[2] = { p0.x, p0.y };
@@ -103,17 +105,14 @@ bool InterpolateWithBezierCurve(const Point& p0, const Point& p1, const Point& v
     double control_points[MAX_CONTROL_POINTS][2];
 
     int ret = InterpPTC(_p0, _p1, _v0, _v1, c0, c1, control_points);
-    if (ret < 0)
+    if (ret > 0)
     {
-        return false;
+        for (int i = 0; i <= ret; i++)
+        {
+            points->emplace_back(control_points[i][0], control_points[i][1]);
+        }
     }
-
-    for (int i = 0; i <= ret; i++)
-    {
-        points->emplace_back(control_points[i][0], control_points[i][1]);
-    }
-
-    return true;
+    return ret;
 }
 
 
@@ -128,9 +127,41 @@ extern "C"
         double k = sqrt(cross[0] * cross[0] + cross[1] * cross[1]);
         double t = begin ? sqrt(v1[0] * v1[0] + v1[1] * v1[1]) : sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
         t = t * t * t;
+        if (t < ZERO)
+        {
+            return NAN;
+        }
+
         k = k / t;
         return k * 100.0;
     }
+
+
+    /// \brief Interpolate one side.
+    ///     Warning: This function will modify p.
+    /// \param p Base control point. p is one of p1, p2, p3.
+    /// \param norm Direction to the point to be interpolated.
+    /// \param step Current Step.
+    /// \param target Target curvature value.
+    /// \param p1 Point to calculate curvature.
+    /// \param p2 Point to calculate curvature.
+    /// \param p3 Point to calculate curvature.
+    /// \param begin Whether is the begin of the curve. \see CalcCurvature
+    /// \return
+    ///     -1: failed
+    ///      0: already satisfied
+    ///      1: new step found
+    static int InterpPTCImpl(
+        double p[2],
+        double norm[2],
+        double* step,
+        double target,
+        double p1[2],
+        double p2[2],
+        double p3[2],
+        int begin
+    );
+
 
     int InterpPTC(
         double p1[2],
@@ -141,9 +172,136 @@ extern "C"
         double c2,
         double(*control_points)[2])
     {
-        // Interpolate with 4 points Bezier curve.
-        // p1, p2 are the start and end points.
+        // Calculate step norm.
+        const double v1Mod = sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
+        const double v2Mod = sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
+        if (v1Mod < ZERO || v2Mod < ZERO)
+        {
+            return ERR_NORM_TOO_SMALL;
+        }
+        double v1Norm[2] = { v1[0] / v1Mod, v1[1] / v1Mod };
+        // To make interpolate easier, we invert this vector.
+        double v2Norm[2] = { -v2[0] / v2Mod, -v2[1] / v2Mod };
 
-        return -1;
+        double left[2] = { p1[0], p1[1] };
+        double right[2] = { p2[0], p2[1] };
+        double stepLeft = 0.0;
+        double stepRight = 0.0;
+
+        for (int i = 0; i < MAX_ITERATION; i++)
+        {
+            const int retLeft = InterpPTCImpl(left, v1Norm, &stepLeft, c1, p1, left, right, 1);
+            const int retRight = InterpPTCImpl(right, v2Norm, &stepRight, c2, left, right, p2, 0);
+
+            if (retLeft == -1 || retRight == -1)
+            {
+                return ERR_FAILED_TO_INTERPOLATE;
+            }
+
+            if (retLeft == 0 && retRight == 0)
+            {
+                // Success
+                control_points[0][0] = p1[0];
+                control_points[0][1] = p1[1];
+                control_points[1][0] = left[0];
+                control_points[1][1] = left[1];
+                control_points[2][0] = right[0];
+                control_points[2][1] = right[1];
+                control_points[3][0] = p2[0];
+                control_points[3][1] = p2[1];
+                return 3;
+            }
+        }
+
+        // We still show it.
+        control_points[0][0] = p1[0];
+        control_points[0][1] = p1[1];
+        control_points[1][0] = left[0];
+        control_points[1][1] = left[1];
+        control_points[2][0] = right[0];
+        control_points[2][1] = right[1];
+        control_points[3][0] = p2[0];
+        control_points[3][1] = p2[1];
+
+        //return ERR_OUT_OF_ITERATION;
+        return 3;
+    }
+
+    static int IsSatisfied(double c, double target)
+    {
+        return !isnan(c) && fabs(c - target) < EPS;
+    }
+
+    static int InterpPTCImpl(
+        double p[2],
+        double norm[2],
+        double* step,
+        double target,
+        double p1[2],
+        double p2[2],
+        double p3[2],
+        int begin
+    )
+    {
+        assert(step);
+
+        // Check initial condition.
+        double c = CalcCurvature(p1, p2, p3, begin);
+        if (IsSatisfied(c, target))
+        {
+            return 0;
+        }
+
+        const double base[2] = { p[0], p[1] };
+
+        // If c is too big, make point further.
+        double left = EPS;
+        double right = *step;
+
+        if (isnan(c) || c > target)
+        {
+            double delta = EPS;
+            double lastDelta = 0.0;
+            while (isnan(c) || c > target)
+            {
+                p[0] = base[0] + delta * norm[0];
+                p[1] = base[1] + delta * norm[1];
+                lastDelta = delta;
+                delta += 10.0;
+                c = CalcCurvature(p1, p2, p3, begin);
+            }
+            if (!isnan(c) && fabs(c - target) < EPS)
+            {
+                *step = lastDelta;
+                return 1;
+            }
+            left = lastDelta;
+            right = delta;
+        }
+
+        // Now, c is bigger, use dichotomy to find a proper value
+        // between lastDelta and delta.
+        while (right - left > ZERO)
+        {
+            const double mid = left + (right - left) * 0.5;
+            p[0] = base[0] + mid * norm[0];
+            p[1] = base[1] + mid * norm[1];
+            c = CalcCurvature(p1, p2, p3, begin);
+            if (IsSatisfied(c, target))
+            {
+                *step = mid;
+                return 1;
+            }
+            if (c < target)
+            {
+                right = mid;
+            }
+            else
+            {
+                left = mid;
+            }
+        }
+
+        return ERR_DICHOTOMY_FAILED;
     }
 }
