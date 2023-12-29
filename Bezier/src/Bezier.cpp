@@ -193,7 +193,7 @@ extern "C"
             const int retLeft = InterpPTCImpl(left, v1Norm, &stepLeft, c1, p1, left, right, 1);
             const int retRight = InterpPTCImpl(right, v2Norm, &stepRight, c2, left, right, p2, 0);
 
-            if (retLeft == -1 || retRight == -1)
+            if (retLeft < 0 || retRight < 0)
             {
                 return ERR_FAILED_TO_INTERPOLATE;
             }
@@ -257,33 +257,31 @@ extern "C"
         const double base[2] = { p[0], p[1] };
 
         // If c is too big, make point further.
-        double left = 0;
-        double right = *step;
-
         if (isnan(c) || c - target > EPS)
         {
-            double delta = 1.0;
-            double lastDelta = 0.0;
+            double delta = *step + 1.0;
+            double lastDelta = *step;
             while (isnan(c) || c > target)
             {
                 p[0] = base[0] + delta * norm[0];
                 p[1] = base[1] + delta * norm[1];
                 lastDelta = delta;
-                delta += 10.0;
+                delta += 1.0;
                 c = CalcCurvature(p1, p2, p3, begin);
             }
+            *step = delta;
+
             if (!isnan(c) && fabs(c - target) < EPS)
             {
-                *step = lastDelta;
                 return 1;
             }
-            left = lastDelta;
-            right = delta;
         }
 
+        double left = 0;
+        double right = *step;
         // Now, c is bigger, use dichotomy to find a proper value
         // between lastDelta and delta.
-        while (right - left > EPS)
+        while (right - left > ZERO)
         {
             const double mid = left + (right - left) * 0.5;
             p[0] = base[0] + mid * norm[0];
