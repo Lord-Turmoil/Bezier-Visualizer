@@ -1,3 +1,5 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #include "BezierImpl.h"
 
 static void DrawControlPoint(double x, double y, COLORREF color);

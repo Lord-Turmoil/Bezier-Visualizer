@@ -1,3 +1,5 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #include <vector>
 #include "../inc/Bezier.h"
 
@@ -169,7 +171,7 @@ extern "C"
         double v2[2],
         double c1,
         double c2,
-        double(*control_points)[2])
+        double (*control_points)[2])
     {
         // Calculate step norm.
         const double v1Mod = sqrt(v1[0] * v1[0] + v1[1] * v1[1]);

@@ -1,9 +1,12 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #include "MainInterface.h"
 
 #include "BezierImpl.h"
 
 const Rect MainInterface::ACTIVE_RANGE(0, 0, 600, 550);
 static char buffer[32];
+
 
 MainInterface::MainInterface() : _impl(new BezierImpl()), _result(new BezierImpl())
 {
@@ -62,19 +65,22 @@ void MainInterface::Draw(IMAGE* pDestImage)
 void MainInterface::BindEvents()
 {
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("exit"))
-        ->OnTriggered(GetTerminator(this));
+            ->OnTriggered(GetTerminator(this));
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("help"))
-        ->OnTriggered([this] { SetSubInterface(Application::GetInstance()->GetInterface("Help")); });
+            ->OnTriggered([this] { SetSubInterface(Application::GetInstance()->GetInterface("Help")); });
 
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("clear"))
-        ->OnTriggered([this] { _impl->ClearControlPoints(); _result->ClearControlPoints(); });
+            ->OnTriggered([this] { _OnClear(); });
     dynamic_cast<KeyboardDetector*>(m_pWidgetManager->GetWidget("toggle-coord"))
-        ->OnTriggered([this] { _impl->ToggleShowCoordinate(); _result->ToggleShowCoordinate(); });
+            ->OnTriggered([this] {
+                _impl->ToggleShowCoordinate();
+                _result->ToggleShowCoordinate();
+            });
     dynamic_cast<Slider*>(m_pWidgetManager->GetWidget("step-slider"))
-        ->OnChange([this](auto&& ph1) { _OnSlide(std::forward<decltype(ph1)>(ph1)); });
+            ->OnChange([this](auto&& ph1) { _OnSlide(std::forward<decltype(ph1)>(ph1)); });
 
     dynamic_cast<Button*>(m_pWidgetManager->GetWidget("interpolate"))
-        ->OnClick([this] { _OnInterpolate(); });
+            ->OnClick([this] { _OnInterpolate(); });
 }
 
 
@@ -91,7 +97,7 @@ void MainInterface::Update(Event* evnt)
 bool MainInterface::_IsInValidRange(int x, int y)
 {
     return x >= 0 && x < _drawPanel.GetImage()->getwidth() &&
-        y >= 0 && y < _drawPanel.GetImage()->getheight();
+            y >= 0 && y < _drawPanel.GetImage()->getheight();
 }
 
 
@@ -149,6 +155,15 @@ void MainInterface::_OnSlide(double value) const
 }
 
 
+void MainInterface::_OnClear() const
+{
+    _impl->ClearControlPoints();
+    _result->ClearControlPoints();
+    dynamic_cast<StaticWidget*>(m_pWidgetManager->GetWidget("success"))->SetAlpha(0);
+
+}
+
+
 void MainInterface::_OnInterpolate() const
 {
     double c0;
@@ -187,4 +202,3 @@ void MainInterface::_OnInterpolate() const
         _result->AddControlPoint(point.x, point.y);
     }
 }
-

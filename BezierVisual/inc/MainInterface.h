@@ -1,3 +1,5 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #pragma once
 
 #include "Macros.h"
@@ -27,6 +29,7 @@ private:
     void _ProcessEvent(Event* evnt) const;
 
     void _OnSlide(double value) const;
+    void _OnClear() const;
     void _OnInterpolate() const;
 
 private:
@@ -39,7 +42,6 @@ private:
 private:
     static const Rect ACTIVE_RANGE;
 };
-
 
 
 #endif

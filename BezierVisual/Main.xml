@@ -14,7 +14,7 @@
                     <Text width="300" height="30" justified="false" font-size="28" font="Segoe UI" color="#000000">Press 'H' to see help</Text>
                 </Drawer>
             </Static>
-            
+
             <!-- Controls -->
 
             <!-- Step slider -->
@@ -82,14 +82,14 @@
                     <Text width="100" height="40" font-size="28" font="Segoe UI" color="#F44336">Error</Text>
                 </Drawer>
             </Static>
-            
+
             <!-- Success prompt -->
             <Static name="success" pos="800 540" alpha="0">
                 <Drawer>
                     <Text width="100" height="40" font-size="28" font="Segoe UI" color="#4CAF50">Succeeded</Text>
                 </Drawer>
             </Static>
-            
+
             <!-- Keyboard Actions -->
             <Detector name="exit">
                 <Trigger type="key" vkey="0x1B"></Trigger>

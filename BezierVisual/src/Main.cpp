@@ -1,3 +1,5 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #include "HelpInterface.h"
 #include "Macros.h"
 #include "MainInterface.h"
@@ -5,8 +7,8 @@
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance,
-                      _In_ LPWSTR    lpCmdLine,
-                      _In_ int       nCmdShow)
+                      _In_ LPWSTR lpCmdLine,
+                      _In_ int nCmdShow)
 {
     // Though we don't use speaker, we have to initialize it.
     Speaker::GetInstance()->Create();
@@ -29,6 +31,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     return 0;
 }
+
 
 AbstractInterface* LoadInterface(XMLElement* node)
 {

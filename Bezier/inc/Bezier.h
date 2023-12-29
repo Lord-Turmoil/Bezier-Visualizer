@@ -1,3 +1,5 @@
+// Copyright (C) 2018 - 2023 Tony's Studio. All rights reserved.
+
 #pragma once
 
 #ifndef _BEZIER_H_
@@ -122,7 +124,7 @@ extern "C"
         double v2[2],
         double c1,
         double c2,
-        double(*control_points)[2]);
+        double (*control_points)[2]);
 }
 
 
