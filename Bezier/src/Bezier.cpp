@@ -170,7 +170,7 @@ extern "C"
         double v2[2],
         double c1,
         double c2,
-        double(*control_points)[2])
+        double (*control_points)[2])
     {
         // Calculate step norm.
         const double v1Mod = sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
@@ -222,15 +222,17 @@ extern "C"
         control_points[2][1] = right[1];
         control_points[3][0] = p2[0];
         control_points[3][1] = p2[1];
-
-        //return ERR_OUT_OF_ITERATION;
         return 3;
+
+        // return ERR_OUT_OF_ITERATION;
     }
+
 
     static int IsSatisfied(double c, double target)
     {
         return !isnan(c) && fabs(c - target) < EPS;
     }
+
 
     static int InterpPTCImpl(
         double p[2],
@@ -255,12 +257,12 @@ extern "C"
         const double base[2] = { p[0], p[1] };
 
         // If c is too big, make point further.
-        double left = EPS;
+        double left = 0;
         double right = *step;
 
-        if (isnan(c) || c > target)
+        if (isnan(c) || c - target > EPS)
         {
-            double delta = EPS;
+            double delta = 1.0;
             double lastDelta = 0.0;
             while (isnan(c) || c > target)
             {
@@ -281,7 +283,7 @@ extern "C"
 
         // Now, c is bigger, use dichotomy to find a proper value
         // between lastDelta and delta.
-        while (right - left > ZERO)
+        while (right - left > EPS)
         {
             const double mid = left + (right - left) * 0.5;
             p[0] = base[0] + mid * norm[0];
